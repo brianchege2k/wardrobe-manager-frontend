@@ -8,8 +8,6 @@ This is the frontend for the Wardrobe Management application, built with Vue.js 
 
 [Backend Repositoy Link](https://github.com/brianchege2k/wardrobe-manager-backend)
 
-[Deployed Backend Web URL](https://wardrobe-management-backend-d697dac91515.herokuapp.com)
-
 Just create an account, Log in and Try all the fun functionalities available.
 
 ## Prerequisites
