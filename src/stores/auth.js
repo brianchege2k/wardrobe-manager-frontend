@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
@@ -10,10 +11,7 @@ export const useAuthStore = defineStore('authStore', {
   actions: {
     async register(userData) {
       try {
-        await axios.post(
-          'https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/register',
-          userData,
-        )
+        await axios.post(`${apiBaseUrl}/api/register`, userData)
         // Registration successful, but don't log in automatically.
       } catch (error) {
         throw new Error(error.response?.data?.message || 'Registration failed')
@@ -22,10 +20,7 @@ export const useAuthStore = defineStore('authStore', {
 
     async login(credentials) {
       try {
-        const response = await axios.post(
-          'https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/login',
-          credentials,
-        )
+        const response = await axios.post(`${apiBaseUrl}/api/login`, credentials)
         this.user = response.data.user
         this.token = response.data.token
 

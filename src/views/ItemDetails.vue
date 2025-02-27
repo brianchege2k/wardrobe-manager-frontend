@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
 const route = useRoute()
 const router = useRouter()
 const item = ref(null)
@@ -13,9 +15,7 @@ const newImage = ref(null) // Store new image file
 // Fetch item details on mount
 onMounted(async () => {
   try {
-    const res = await axios.get(
-      `https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items/${route.params.id}`,
-    )
+    const res = await axios.get(`${apiBaseUrl}/api/items/${route.params.id}`)
     item.value = res.data
 
     // Initialize editable fields without modifying image
@@ -31,9 +31,7 @@ onMounted(async () => {
 // Delete item
 const deleteItem = async () => {
   try {
-    await axios.delete(
-      `https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items/${route.params.id}`,
-    )
+    await axios.delete(`${apiBaseUrl}/api/items/${route.params.id}`)
     router.push('/dashboard')
   } catch (error) {
     console.error('Error deleting item:', error)
@@ -66,15 +64,11 @@ const updateItem = async () => {
       formData = { ...updatedItem.value }
     }
 
-    const response = await axios.put(
-      `https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items/${route.params.id}`,
-      formData,
-      {
-        headers: newImage.value
-          ? { 'Content-Type': 'multipart/form-data' }
-          : { 'Content-Type': 'application/json' },
-      },
-    )
+    const response = await axios.put(`${apiBaseUrl}/api/items/${route.params.id}`, formData, {
+      headers: newImage.value
+        ? { 'Content-Type': 'multipart/form-data' }
+        : { 'Content-Type': 'application/json' },
+    })
 
     item.value = response.data // Update displayed item
     editing.value = false // Exit edit mode

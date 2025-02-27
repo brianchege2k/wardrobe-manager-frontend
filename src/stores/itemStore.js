@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useAuthStore } from './auth'
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
 export const useItemStore = defineStore('itemStore', {
   state: () => ({
     items: [],
@@ -37,12 +39,9 @@ export const useItemStore = defineStore('itemStore', {
       const token = authStore.token
 
       try {
-        const response = await axios.get(
-          'https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
+        const response = await axios.get(`${apiBaseUrl}/api/items`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         this.items = response.data
       } catch (error) {
         console.error('Error fetching items:', error.response?.data || error)
@@ -58,16 +57,12 @@ export const useItemStore = defineStore('itemStore', {
       const token = authStore.token
 
       try {
-        const response = await axios.post(
-          'https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items',
-          itemData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data', // Important for image upload
-            },
+        const response = await axios.post(`${apiBaseUrl}/api/items`, itemData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Important for image upload
           },
-        )
+        })
 
         this.items.push(response.data) // Instantly add new item to dashboard
       } catch (error) {
@@ -82,16 +77,12 @@ export const useItemStore = defineStore('itemStore', {
       const token = authStore.token
 
       try {
-        const response = await axios.put(
-          `https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items/${itemId}`,
-          updatedData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data', // Support for image uploads
-            },
+        const response = await axios.put(`${apiBaseUrl}/api/items/${itemId}`, updatedData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Support for image uploads
           },
-        )
+        })
 
         // Update item in local state
         const index = this.items.findIndex((item) => item.id === itemId)
@@ -110,12 +101,9 @@ export const useItemStore = defineStore('itemStore', {
       const token = authStore.token
 
       try {
-        await axios.delete(
-          `https://wardrobe-management-backend-d697dac91515.herokuapp.com/api/items/${itemId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
+        await axios.delete(`${apiBaseUrl}/api/items/${itemId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
 
         // Remove deleted item from local state
         this.items = this.items.filter((item) => item.id !== itemId)
