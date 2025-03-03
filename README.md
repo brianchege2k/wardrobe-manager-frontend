@@ -27,7 +27,7 @@ If you haven’t already downloaded the project:
 
 ```bash
 git clone https://github.com/brianchege2k/wardrobe-manager-frontend.git
-cd wardrobe-management-frontend
+cd wardrobe-manager-frontend
 
 ```
 
